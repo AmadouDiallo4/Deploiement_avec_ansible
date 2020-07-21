@@ -25,13 +25,13 @@
     path: "/var/www/html/wordpress/wp-config-sample.php"
   register: check_sample
 
-  #- name: "[WORDPRESSE] - rename wp-config-sample.php"
-  #command: mv /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
-  #when: check_sample.stat.exists == True
+- name: "[WORDPRESSE] - rename wp-config-sample.php"
+  command: mv /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
+  when: check_sample.stat.exists == True
 
 - name: "[WORDPRESS] - config wp-config.php"
   lineinfile: 
-    dest: "/var/www/html/wp-config.php" # fichier sur lequel on travaille
+    dest: "/var/www/html/wordpress/wp-config.php" # fichier sur lequel on travaille
     regexp: "{{ item.search }}"
     line: "{{ item.new }}"
     backrefs: yes
