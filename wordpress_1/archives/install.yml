@@ -1,0 +1,17 @@
+---
+
+- name: "[TEMPLATE]"
+  hosts: all
+  tasks: 
+    - name: "[TEMPLATE] - create directory"
+      file: 
+        path: /tmp/myapp/
+        state: directory
+        mode: 0755
+        owner: root
+
+    - name: "[TEMPLATE]- create template"
+      template: 
+        src: myappconf.cfg.j2
+        dest: /tmp/myapp/myappconf.cfg
+        mode: 0755

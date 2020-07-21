@@ -1,0 +1,6 @@
+all:
+hosts:
+server0
+server0:
+server1
+server1:

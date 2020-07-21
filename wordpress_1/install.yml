@@ -1,0 +1,8 @@
+---
+- name: "[VAGRANT] - test"
+  hosts: all
+  tasks: 
+  roles: 
+    - role: wordpress 
+      
+

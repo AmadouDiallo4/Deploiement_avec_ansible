@@ -1,0 +1,5 @@
+---
+# tasks file for wordpress
+- name: "[WORDPRESS] - install packages"
+  include: install_packages.yml
+  

@@ -1,0 +1,27 @@
+---
+- name: "[VAGRANT]"
+  hosts: all
+  tasks: 
+    - name: "[VAGRANT] - copie du fichier"
+      copy:
+        src: ./monfichier.txt
+        dest: /tmp/vagrant.txt
+
+    - name: "[FICHIER] add hawa"
+      lineinfile: 
+        path: /tmp/vagrant.txt
+        line: 'et moi je suis hawa'
+
+    - name: "[FICHIER] - change vagrant"
+      lineinfile: 
+        path: /tmp/vagrant.txt
+        regexp: '(.*)VAGRANT(.*)'
+        line: '\1mariama\2'
+        backrefs: yes
+
+
+    - name: "[FICHIER] - add phrase "
+      lineinfile: 
+        path: /tmp/vagrant.txt
+        insertafter: '(.*)hawa(.*)'
+        line: "mon nom de famille c'est diallo"
