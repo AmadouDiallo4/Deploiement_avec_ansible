@@ -1,0 +1,10 @@
+---
+# defaults file for mysql
+
+#
+mysql_packages:
+  - mariadb-server
+  - python-mysqldb
+mysql_db: "wordpress"
+mysql_user: "user1"
+mysql_password: "password"

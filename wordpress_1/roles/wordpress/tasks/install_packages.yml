@@ -4,13 +4,14 @@
     update_cache: yes
   become: yes
 
-- name: "[WORDPRESS] - Install LAMP"
+- name: "[WORDPRESS] - Install aapache php"
   apt:
-    name: "{{ package_name }}" 
+    name: "{{ item }}" 
     state: present
   become: yes
+  with_items: "{{ wordpress_packages }}"
 
-- name: "[WORDPRESS] - start apache2 && mariadb"
+- name: "[WORDPRESS] - start apache2"
   service:
     name: "{{ item }}"
     state: started
@@ -18,5 +19,50 @@
   become: yes
   with_items:
     - apache2
-    - mariadb
 
+      #- name: "[WORDPRESS] - delete html directory"
+      #file:
+      #path: "/var/www/html"
+      #state: absent
+
+
+    #- name: "[WORDPRESS] - lien symbolique]"
+    #file:
+    #src: "/srv/html"
+    #dest: "/var/www/html"
+    #state: link
+
+- name: "[WORDPRESS] - if exist"
+  stat:
+    path: "/var/www/html/wordpress/"
+  register: check_wordpress
+
+- name: "[WORDPRESS] - install tar.gz"
+  unarchive:
+    src: "{{ wordpress_source }}"
+    dest: "/var/www/html/"
+    remote_src: yes
+  when: check_wordpress.stat.exists == False
+  run_once: yes
+
+- name: "[WORDPRESS] - check if exist"
+  stat:
+    path: "/var/www/html/wordpress/wp-config-sample.php"
+  register: check_sample
+
+- name: "[WORDPRESS] - rename wp-config-sample.php"
+  command: mv /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php
+  when: check_sample.stat.exists == True
+
+- name: "[WORDPRESS] - config/modify wp-config.php"
+  lineinfile:
+    dest: "/var/www/html/wordpress/wp-config.php"
+    regexp: "{{ item.search }}"
+    line: "{{ item.new }}"
+    backrefs: yes
+  with_items:
+    - {'search': '^(.*)votre_nom_de_bdd(.*)$', 'new': '\1{{ mysql_db }}\2'}
+    - {'search': '^(.*)votre_utilisateur_de_bdd(.*)$', 'new': '\1{{ mysql_user }}\2'}
+    - {'search': '^(.*)votre_mdp_de_bdd(.*)$', 'new': '\1{{ mysql_password }}\2'}
+    - {'search': '^(.*)localhost(.*)$', 'new': '\1{{ mysql_host }}\2'}
+      

@@ -1,0 +1,49 @@
+---
+# tasks file for mysql
+
+- name: "[MYSQL - MARIADB] - update cache"
+  apt: 
+    update_cache: yes
+  become: yes
+
+- name: "[MYSQL - MARIADB] - install mysql(mariadb)"
+  apt:
+    name: "{{ item }}"
+    state: present
+  become: yes
+  with_items: "{{ mysql_packages }}"
+
+- name: "[MYSQL - MARIADB]- start mariadb"
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  become: yes
+  with_items:
+    - mariadb
+
+
+- name: "[MYSQL - MARIADB] - create daabase"
+  mysql_db:
+    name: "{{ mysql_db }}"
+  become: yes
+
+- name: "[MYSQL - MARIADB] - create user"
+  mysql_user:
+    name: "{{ mysql_user }}"
+    password: "{{ mysql_password }}"
+    priv: "*.*:ALL"
+    host: "{{ item }}"
+  become: yes
+  with_items: "{{ groups.apache }}" #les machines qui vont se connecter sur la bd
+
+- name: "[MYSQL - MARIADB] - conf mariadb: my.cnf"
+  lineinfile: 
+    dest: "/etc/mysql/my.cnf"
+    line: "{{ item }}"
+  with_items:
+    - "[mysqld]"
+    - "bind-address = 0.0.0.0"
+    - "# skip-networking"
+  notify: restart mariadb
+   

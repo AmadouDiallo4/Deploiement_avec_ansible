@@ -1,8 +1,13 @@
 ---
-- name: "[VAGRANT] - test"
-  hosts: all
+- name: "[VAGRANT] - mysql"
+  hosts: mysql
   tasks: 
   roles: 
-    - role: wordpress 
+    - role: mysql 
       
+- name: "[VAGRANT] - wordpress"
+  hosts: apache
+  tasks: 
+  roles: 
+    - role: wordpress
 
