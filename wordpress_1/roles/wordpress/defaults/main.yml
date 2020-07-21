@@ -1,2 +1,20 @@
 ---
 # defaults file for wordpress
+# packages for lamp
+package_name:
+        - apache2
+        - mariadb-server
+        - php
+        - php-common
+        - php-mysql
+        - libapache2-mod-php
+        - python-mysqldb
+        - wget
+
+# variables for mysql 
+mysql_db: "wordpress"
+mysql_user: "user1"
+mysql_password: "123456"
+
+# wordpress
+wordpress_source: "https://fr.wordpress.org/latest-fr_FR.tar.gz"

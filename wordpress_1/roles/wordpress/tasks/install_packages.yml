@@ -6,7 +6,7 @@
 
 - name: "[WORDPRESS] - Install LAMP"
   apt:
-    name: ['apache2', 'php','php-mysql', 'mariadb-server', 'php-common', 'libapache2-mod-php', 'python-mysqldb', 'wget']
+    name: "{{ package_name }}" 
     state: present
   become: yes
 
