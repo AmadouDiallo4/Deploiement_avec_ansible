@@ -1,0 +1,8 @@
+---
+- name: "[RASPI]"
+  hosts: all
+  tasks: 
+    - name: "[copie du fichier] - test"
+      copy: 
+        src: ./monfichier.txt
+        dest: /tmp/raspi.txt

@@ -1,11 +1,11 @@
 ---
-- name: "[VAGRANT] - mysql"
+- name: "[RASPI] - mysql"
   hosts: mysql
   tasks: 
   roles: 
     - role: mysql 
       
-- name: "[VAGRANT] - wordpress"
+- name: "[RASPI] - wordpress"
   hosts: apache
   tasks: 
   roles: 
